@@ -19,12 +19,6 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
-
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
@@ -48,4 +42,40 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+--FRED
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
+vim.keymap.set('n', 'sba', function()
+  vim.cmd 'b#'
+end, { desc = 'Go to [B]uffer [A]lternate buffer' })
+vim.keymap.set('n', 'sd', function()
+  vim.cmd 'bn'
+  vim.cmd 'bdelete#'
+end, { desc = 'Delete current buffer' })
+vim.keymap.set('n', 'sn', function()
+  vim.cmd 'bn'
+end, { desc = 'Go to next buffer' })
+vim.keymap.set('n', 'sp', function()
+  vim.cmd 'bp'
+end, { desc = 'Go to previous buffer' })
+vim.keymap.set('n', 'scn', function()
+  vim.cmd 'cn'
+end, { desc = 'Go to next quickfix list item' })
+vim.keymap.set('n', 'scp', function()
+  vim.cmd 'cp'
+end, { desc = 'Go to previous quickfix list item' })
+vim.keymap.set('n', 'scg', function()
+  vim.cmd '.cc'
+end, { desc = 'Open current quickfix list item' })
+vim.keymap.set('n', 'sco', function()
+  vim.cmd 'copen'
+end, { desc = 'Open quickfix list' })
+vim.keymap.set('n', 'scc', function()
+  vim.cmd 'cclose'
+end, { desc = 'Close quickfix list' })
+
+vim.keymap.set('n', 'sw', function()
+  vim.cmd 'wa'
+end, { desc = 'Write all files' })
 -- vim: ts=2 sts=2 sw=2 et
