@@ -49,10 +49,10 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 vim.keymap.set('n', 'sba', function()
   vim.cmd 'b#'
 end, { desc = 'Go to [B]uffer [A]lternate buffer' })
-vim.keymap.set('n', 'sd', function()
+vim.keymap.set('n', 'sbd', function()
   vim.cmd 'bn'
   vim.cmd 'bdelete#'
-end, { desc = 'Delete current buffer' })
+end, { desc = '[B]uffer [D]elete' })
 vim.keymap.set('n', 'sn', function()
   vim.cmd 'bn'
 end, { desc = 'Go to next buffer' })
