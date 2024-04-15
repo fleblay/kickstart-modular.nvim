@@ -46,13 +46,13 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
-vim.keymap.set('n', 'sba', function()
+vim.keymap.set('n', 'sa', function()
   vim.cmd 'b#'
-end, { desc = 'Go to [B]uffer [A]lternate buffer' })
-vim.keymap.set('n', 'sbd', function()
+end, { desc = 'Go to Buffer [A]lternate buffer' })
+vim.keymap.set('n', 'sd', function()
   vim.cmd 'bn'
   vim.cmd 'bdelete#'
-end, { desc = '[B]uffer [D]elete' })
+end, { desc = 'Buffer [D]elete' })
 vim.keymap.set('n', 'sn', function()
   vim.cmd 'bn'
 end, { desc = 'Go to next buffer' })

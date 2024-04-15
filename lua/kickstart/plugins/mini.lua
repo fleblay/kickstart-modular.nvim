@@ -17,12 +17,12 @@ return {
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup {
         mappings = {
-          add = 'sa', -- Add surrounding in Normal and Visual modes
-          delete = 'sd', -- Delete surrounding
-          find = 'sf', -- Find surrounding (to the right)
-          find_left = 'sF', -- Find surrounding (to the left)
-          highlight = 'sh', -- Highlight surrounding
-          replace = 'sr', -- Replace surrounding
+          add = 'ssa', -- Add surrounding in Normal and Visual modes
+          delete = 'ssd', -- Delete surrounding
+          find = 'ssf', -- Find surrounding (to the right)
+          find_left = 'ssF', -- Find surrounding (to the left)
+          highlight = 'ssh', -- Highlight surrounding
+          replace = 'ssr', -- Replace surrounding
           update_n_lines = '', -- Update `n_lines`
 
           suffix_last = 'l', -- Suffix to search with "prev" method
