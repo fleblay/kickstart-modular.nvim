@@ -52,6 +52,10 @@ return {
             name = 'gitlab-ci',
             uri = 'https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json',
           },
+          {
+            name = 'Helm Chart.yaml',
+            uri = 'https://json.schemastore.org/chart.json',
+          },
         },
 
         lspconfig = {
@@ -69,6 +73,7 @@ return {
                 select = {
                   'kustomization.yaml',
                   'gitlab-ci',
+                  'Helm Chart.yaml',
                   'Ansible Execution Environment',
                   'Ansible Meta',
                   'Ansible Meta Runtime',
