@@ -186,7 +186,7 @@ return {
         ansiblels = {},
         helm_ls = {},
         yamlls = {},
-        ruby_ls = {},
+        ruby_lsp = {},
         bufls = {},
       }
 
