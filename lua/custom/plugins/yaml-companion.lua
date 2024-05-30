@@ -56,6 +56,10 @@ return {
             name = 'Helm Chart.yaml',
             uri = 'https://json.schemastore.org/chart.json',
           },
+          {
+            name = 'sqlc configuration',
+            uri = 'https://json.schemastore.org/sqlc-2.0.json',
+          },
         },
 
         lspconfig = {
@@ -74,6 +78,7 @@ return {
                   'kustomization.yaml',
                   'gitlab-ci',
                   'Helm Chart.yaml',
+                  'sqlc configuration',
                   'Ansible Execution Environment',
                   'Ansible Meta',
                   'Ansible Meta Runtime',
