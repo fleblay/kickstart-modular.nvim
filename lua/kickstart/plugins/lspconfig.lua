@@ -161,7 +161,7 @@ return {
           settings = {
             gopls = {
               buildFlags = {
-                '-tags=e2e_tests integration_tests',
+                '-tags=e2e_tests integration_tests e2e integration',
               },
             },
           },
