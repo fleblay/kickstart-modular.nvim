@@ -30,7 +30,7 @@ return {
       end, { desc = 'Jump to next Harpoon buffer' })
       vim.keymap.set('n', '<leader>n', function()
         harpoon:list():next()
-      end, { 'Jump to previous Harpoon buffer' })
+      end, { desc = 'Jump to previous Harpoon buffer' })
       vim.keymap.set('n', '<leader>e', function()
         harpoon.ui:toggle_quick_menu(harpoon:list())
       end, { desc = 'Open Harpoon window' })
