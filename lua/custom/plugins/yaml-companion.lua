@@ -15,8 +15,8 @@ return {
         },
         -- schemas available in Telescope picker
         schemas = {
-          -- not loaded automatically, manually select with
           -- Usually K8s CRDS
+          -- not loaded automatically, manually select with
           -- :Telescope yaml_schema
           {
             name = 'Argo CD Application',
@@ -41,6 +41,22 @@ return {
           {
             name = 'Traefik middlewaretcp',
             uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/traefik.io/middlewaretcp_v1alpha1.json',
+          },
+          {
+            name = 'monitoring.coreos.com alertmanager',
+            uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/alertmanager_v1.json',
+          },
+          {
+            name = 'monitoring.coreos.com alertmanagerconfig',
+            uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/alertmanagerconfig_v1alpha1.json',
+          },
+          {
+            name = 'monitoring.coreos.com servicemonitor',
+            uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/servicemonitor_v1.json',
+          },
+          {
+            name = 'monitoring.coreos.com prometheus',
+            uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/prometheus_v1.json',
           },
           -- schemas below are automatically loaded, but added
           -- them here so that they show up in the statusline
