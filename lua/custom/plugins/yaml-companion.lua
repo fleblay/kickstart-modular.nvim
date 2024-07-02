@@ -51,12 +51,36 @@ return {
             uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/alertmanagerconfig_v1alpha1.json',
           },
           {
-            name = 'monitoring.coreos.com servicemonitor',
-            uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/servicemonitor_v1.json',
+            name = 'monitoring.coreos.com podmonitor',
+            uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/podmonitor_v1.json',
+          },
+          {
+            name = 'monitoring.coreos.com probe',
+            uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/probe_v1.json',
           },
           {
             name = 'monitoring.coreos.com prometheus',
             uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/prometheus_v1.json',
+          },
+          {
+            name = 'monitoring.coreos.com prometheusagent',
+            uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/prometheusagent_v1alpha1.json',
+          },
+          {
+            name = 'monitoring.coreos.com prometheusrule',
+            uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/prometheusrule_v1.json',
+          },
+          {
+            name = 'monitoring.coreos.com scrapeconfig',
+            uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/scrapeconfig_v1alpha1.json',
+          },
+          {
+            name = 'monitoring.coreos.com servicemonitor',
+            uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/servicemonitor_v1.json',
+          },
+          {
+            name = 'monitoring.coreos.com thanosruler',
+            uri = 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/thanosruler_v1.json',
           },
           -- schemas below are automatically loaded, but added
           -- them here so that they show up in the statusline
