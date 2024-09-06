@@ -12,13 +12,13 @@ return {
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- - sd'   - [S]urround [D]elete [']quotes
-      -- - sr)'  - [S]urround [R]eplace [)] [']
+      -- - ssaiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
+      -- - ssd'   - [S]urround [D]elete [']quotes
+      -- - ssr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup {
         mappings = {
           add = 'ssa', -- Add surrounding in Normal and Visual modes
-          delete = 'ssd', -- Delete surrounding
+          delete = 'ssd', -- Delete surroundin
           find = 'ssf', -- Find surrounding (to the right)
           find_left = 'ssF', -- Find surrounding (to the left)
           highlight = 'ssh', -- Highlight surrounding
