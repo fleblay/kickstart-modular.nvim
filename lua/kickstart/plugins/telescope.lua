@@ -107,6 +107,23 @@ return {
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+      -- Search hidden files also
+      vim.keymap.set('n', '<leader>si', function()
+        builtin.live_grep {
+          prompt_title = 'Live Grep in Hidden Files',
+          additional_args = function()
+            return { '--no-ignore', '--hidden' }
+          end,
+        }
+      end, { desc = '[S]earch Live Grep H[i]dden files' })
+
+      vim.keymap.set('n', '<leader>fi', function()
+        builtin.find_files {
+          prompt_title = 'Find in Hidden Files',
+          no_ignore = true,
+          hidden = true,
+        }
+      end, { desc = 'Find in hidden files' })
     end,
   },
 }
