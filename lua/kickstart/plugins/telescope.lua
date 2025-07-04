@@ -4,7 +4,6 @@
 -- you do for a plugin at the top level, you can do for a dependency.
 --
 -- Use the `dependencies` key to specify the dependencies of a particular plugin
-
 return {
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
@@ -51,6 +50,8 @@ return {
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
+      local actions = require 'telescope.actions'
+
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
@@ -59,6 +60,21 @@ return {
         --   mappings = {
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
+        defaults = {
+          mappings = {
+            i = {
+              ['<c-d>'] = actions.delete_buffer,
+              ['<M-q>'] = false, -- disable default Alt+q (Meta+q)
+              ['<C-q>'] = actions.send_selected_to_loclist + actions.open_loclist, -- use Ctrl+q to send to loclist and open it
+            },
+            n = {
+              ['<c-d>'] = actions.delete_buffer,
+              ['dd'] = actions.delete_buffer,
+              ['<M-q>'] = false, -- disable default Alt+q (Meta+q)
+              ['<C-q>'] = actions.send_selected_to_loclist + actions.open_loclist, -- use Ctrl+q to send to loclist and open it
+            },
+          },
+        },
         -- },
         -- pickers = {}
         extensions = {
@@ -67,7 +83,6 @@ return {
           },
         },
       }
-
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
@@ -107,6 +122,23 @@ return {
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+      -- Search hidden files also
+      vim.keymap.set('n', '<leader>si', function()
+        builtin.live_grep {
+          prompt_title = 'Live Grep in Hidden Files',
+          additional_args = function()
+            return { '--no-ignore', '--hidden' }
+          end,
+        }
+      end, { desc = '[S]earch Live Grep [U]ndisplayed files' })
+
+      vim.keymap.set('n', '<leader>su', function()
+        builtin.find_files {
+          prompt_title = 'Find in Hidden Files',
+          no_ignore = true,
+          hidden = true,
+        }
+      end, { desc = 'Find in hidden files' })
     end,
   },
 }

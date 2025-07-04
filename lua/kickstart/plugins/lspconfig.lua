@@ -209,7 +209,19 @@ return {
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        -- gopls = {},
+        gopls = {
+          cmd_env = {
+            GOFLAGS = '-tags=e2e_tests,integration_tests,e2e,integration',
+          },
+          settings = {
+            gopls = {
+              buildFlags = {
+                '-tags=e2e_tests,integration_tests,e2e,integration',
+              },
+            },
+          },
+        },
+        golangci_lint_ls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -231,10 +243,13 @@ return {
                 callSnippet = 'Replace',
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
+              diagnostics = { disable = { 'missing-fields' } },
             },
           },
         },
+        ansiblels = {},
+        yamlls = {},
+        terraformls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -253,6 +268,10 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'ansible-lint',
+        'golangci-lint',
+        'yamlfmt',
+        'tflint',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -270,6 +289,10 @@ return {
           end,
         },
       }
+      -- Fix from https://github.com/nvim-lua/kickstart.nvim/issues/1728
+      for name, config in pairs(servers) do
+        vim.lsp.config(name, config)
+      end
     end,
   },
 }

@@ -19,18 +19,23 @@ return {
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
+        local disable_filetypes = { c = true, cpp = true, yaml = true }
         if disable_filetypes[vim.bo[bufnr].filetype] then
           return nil
         else
-          return {
-            timeout_ms = 500,
-            lsp_format = 'fallback',
-          }
+          return nil
+          -- return {
+          --   timeout_ms = 1000,
+          --   lsp_format = 'fallback',
+          -- }
         end
       end,
       formatters_by_ft = {
+        go = { 'golangci-lint' },
         lua = { 'stylua' },
+        yaml = { 'yamlfmt' }, -- config under .config/yamlfmt/.yamlfmt
+        terraform = { 'tflint' },
+        -- ansible = { 'ansible-lint' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
