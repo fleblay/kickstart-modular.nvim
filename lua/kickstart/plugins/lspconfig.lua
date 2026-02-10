@@ -250,6 +250,7 @@ return {
         ansiblels = {},
         yamlls = {},
         terraformls = {},
+        cue = {},
       }
 
       -- Ensure the servers and tools above are installed

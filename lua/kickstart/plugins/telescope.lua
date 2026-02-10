@@ -130,7 +130,7 @@ return {
             return { '--no-ignore', '--hidden' }
           end,
         }
-      end, { desc = '[S]earch Live Grep [U]ndisplayed files' })
+      end, { desc = '[S]earch Live Grep [I]ncluding hidden files' })
 
       vim.keymap.set('n', '<leader>su', function()
         builtin.find_files {
@@ -138,7 +138,7 @@ return {
           no_ignore = true,
           hidden = true,
         }
-      end, { desc = 'Find in hidden files' })
+      end, { desc = '[S]earch [U]nhidden files' })
     end,
   },
 }

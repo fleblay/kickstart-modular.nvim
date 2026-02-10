@@ -21,6 +21,9 @@ return {
         'proto',
         'dockerfile',
         'yaml',
+        'gotmpl',
+        'helm',
+        'cue'
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
@@ -33,6 +36,20 @@ return {
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
+    config = function(_, opts)
+      ---@diagnostic disable-next-line: missing-fields
+      require('nvim-treesitter.configs').setup(opts)
+      vim.filetype.add {
+        extension = {
+          gotmpl = 'gotmpl',
+        },
+        pattern = {
+          ['.*/templates/.*%.tpl'] = 'helm',
+          ['.*/templates/.*%.ya?ml'] = 'helm',
+          ['helmfile.*%.ya?ml'] = 'helm',
+        },
+      }
+    end,
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
     --

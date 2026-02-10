@@ -2,7 +2,4 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
-return {
-  require 'custom.plugins.fugitive',
-  require 'custom.plugins.nvim-ansible',
-}
+return {}

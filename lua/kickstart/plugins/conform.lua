@@ -23,11 +23,10 @@ return {
         if disable_filetypes[vim.bo[bufnr].filetype] then
           return nil
         else
-          return nil
-          -- return {
-          --   timeout_ms = 1000,
-          --   lsp_format = 'fallback',
-          -- }
+          return {
+            timeout_ms = 1000,
+            lsp_format = 'fallback',
+          }
         end
       end,
       formatters_by_ft = {
@@ -35,6 +34,7 @@ return {
         lua = { 'stylua' },
         yaml = { 'yamlfmt' }, -- config under .config/yamlfmt/.yamlfmt
         terraform = { 'tflint' },
+        cue = { 'cue_fmt' },
         -- ansible = { 'ansible-lint' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },

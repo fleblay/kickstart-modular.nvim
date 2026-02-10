@@ -1,10 +1,10 @@
---Remove s as it is the same as 'cl'
+-- Remove s as it is the same as 'cl'
 vim.keymap.set('n', 's', '<Nop>')
 
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
---
+-- Quickfix list navigation
 vim.keymap.set('n', 'sqn', function()
   vim.cmd 'cn'
 end, { desc = 'Go to next quickfix list item' })
@@ -13,9 +13,9 @@ vim.keymap.set('n', 'sqp', function()
   vim.cmd 'cp'
 end, { desc = 'Go to previous quickfix list item' })
 
-vim.keymap.set('n', 'sqo', function()
+vim.keymap.set('n', 'sqg', function()
   vim.cmd '.cc'
-end, { desc = 'Open current quickfix list item' })
+end, { desc = 'Go to current quickfix list item' })
 
 vim.keymap.set('n', 'sqo', function()
   vim.cmd 'copen'
