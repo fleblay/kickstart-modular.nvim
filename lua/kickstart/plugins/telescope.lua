@@ -14,7 +14,23 @@ if vim.fn.executable 'make' == 1 then table.insert(telescope_plugins, gh 'nvim-t
 
 vim.pack.add(telescope_plugins)
 
+local actions = require 'telescope.actions'
 require('telescope').setup {
+  defaults = {
+    mappings = {
+      i = {
+        ['<c-d>'] = actions.delete_buffer,
+        ['<M-q>'] = false,
+        ['<C-q>'] = actions.send_selected_to_loclist + actions.open_loclist,
+      },
+      n = {
+        ['<c-d>'] = actions.delete_buffer,
+        ['dd'] = actions.delete_buffer,
+        ['<M-q>'] = false,
+        ['<C-q>'] = actions.send_selected_to_loclist + actions.open_loclist,
+      },
+    },
+  },
   extensions = {
     ['ui-select'] = { require('telescope.themes').get_dropdown() },
   },
@@ -87,5 +103,21 @@ vim.keymap.set(
 
 -- Shortcut for searching your Neovim configuration files
 vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config', follow = true } end, { desc = '[S]earch [N]eovim files' })
+
+-- Search including hidden and gitignored files
+vim.keymap.set('n', '<leader>si', function()
+  builtin.live_grep {
+    additional_args = function() return { '--no-ignore', '--hidden' } end,
+    prompt_title = 'Live Grep (hidden + ignored)',
+  }
+end, { desc = '[S]earch [I]gnored and hidden files by grep' })
+
+vim.keymap.set('n', '<leader>su', function()
+  builtin.find_files {
+    no_ignore = true,
+    hidden = true,
+    prompt_title = 'Find Files (hidden + ignored)',
+  }
+end, { desc = '[S]earch [U]nlisted (ignored and hidden) files' })
 
 -- vim: ts=2 sts=2 sw=2 et
