@@ -5,6 +5,7 @@ require 'options'
 
 -- [[ Basic Keymaps ]]
 require 'keymaps'
+require 'custom.keymaps'
 
 -- [[ Set up vim.pack ]]
 require 'pack'
