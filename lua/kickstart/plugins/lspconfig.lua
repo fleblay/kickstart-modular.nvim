@@ -4,8 +4,11 @@ local function gh(repo) return 'https://github.com/' .. repo end
 --  Language servers are external tools, installed and managed by Mason (`:Mason`).
 --  See `:help lsp-config` and `:help lsp-vs-treesitter`
 
--- Useful status updates for LSP.
-vim.pack.add { gh 'j-hui/fidget.nvim' }
+-- Useful status updates for LSP; schemastore provides JSON/YAML schema catalogs for yamlls.
+vim.pack.add {
+  gh 'j-hui/fidget.nvim',
+  gh 'b0o/schemastore.nvim',
+}
 require('fidget').setup {}
 
 -- This function gets run when an LSP attaches to a particular buffer.
@@ -62,6 +65,55 @@ vim.api.nvim_create_autocmd('LspAttach', {
 --  and configured/enabled through `vim.lsp.config`/`vim.lsp.enable` below.
 ---@type table<string, vim.lsp.Config>
 local servers = {
+  -- Go
+  gopls = {
+    cmd_env = { GOFLAGS = '-tags=e2e_tests,integration_tests,e2e,integration' },
+    settings = {
+      gopls = {
+        buildFlags = { '-tags=e2e_tests,integration_tests,e2e,integration' },
+      },
+    },
+  },
+  golangci_lint_ls = {},
+
+  -- Shell (picks up shellcheck and shfmt automatically when on PATH)
+  bashls = {},
+
+  -- Terraform
+  terraformls = {},
+
+  -- Ansible (integrates ansible-lint when on PATH)
+  ansiblels = {},
+
+  -- Helm (suppress yamlls noise inside gotmpl-laden templates)
+  helm_ls = {
+    settings = {
+      ['helm-ls'] = {
+        yamlls = { diagnosticsLimit = 0 },
+      },
+    },
+  },
+
+  -- YAML: schemastore catalog (kustomization, GitHub workflows, docker-compose, ...)
+  --  plus the yamlls built-in kubernetes schema for raw manifests
+  yamlls = {
+    settings = {
+      yaml = {
+        schemaStore = { enable = false, url = '' }, -- disable built-in store; schemastore.nvim provides the catalog
+        schemas = vim.tbl_deep_extend('force', require('schemastore').yaml.schemas(), {
+          kubernetes = {
+            'k8s/**/*.{yml,yaml}',
+            'kubernetes/**/*.{yml,yaml}',
+            'manifests/**/*.{yml,yaml}',
+            'deploy/**/*.{yml,yaml}',
+            'base/**/*.{yml,yaml}',
+            'overlays/**/*.{yml,yaml}',
+          },
+        }),
+      },
+    },
+  },
+
   stylua = {}, -- Used to format Lua code
 
   -- Special Lua Config, as recommended by neovim help docs
@@ -94,6 +146,8 @@ local servers = {
     settings = {
       Lua = {
         format = { enable = false }, -- Disable formatting (formatting is done by stylua)
+        completion = { callSnippet = 'Replace' },
+        diagnostics = { disable = { 'missing-fields' } },
       },
     },
   },
@@ -111,7 +165,13 @@ require('mason').setup {}
 
 local ensure_installed = vim.tbl_keys(servers or {})
 vim.list_extend(ensure_installed, {
-  -- Non-LSP tools to install go here
+  -- Formatters and linters used by conform / bashls
+  'goimports',
+  'gofumpt',
+  'golangci-lint',
+  'yamlfmt',
+  'shellcheck',
+  'shfmt',
 })
 
 require('mason-tool-installer').setup { ensure_installed = ensure_installed }
