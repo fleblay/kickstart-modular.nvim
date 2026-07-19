@@ -4,13 +4,17 @@ local function gh(repo) return 'https://github.com/' .. repo end
 vim.pack.add { { src = gh 'L3MON4D3/LuaSnip', version = vim.version.range '2.*' } }
 require('luasnip').setup {}
 
+-- Premade snippets for many languages/frameworks
+vim.pack.add { gh 'rafamadriz/friendly-snippets' }
+require('luasnip.loaders.from_vscode').lazy_load()
+
 -- [[ Autocomplete Engine ]]
 vim.pack.add { { src = gh 'saghen/blink.cmp', version = vim.version.range '1.*' } }
 require('blink.cmp').setup {
   keymap = {
-    -- 'default': <c-y> accepts; <c-n>/<c-p> select; <c-space> opens menu/docs; <c-e> hides.
+    -- 'enter': <cr> accepts; <c-n>/<c-p> select; <c-space> opens menu/docs; <c-e> hides.
     -- See `:help blink-cmp-config-keymap`
-    preset = 'default',
+    preset = 'enter',
   },
 
   appearance = {
@@ -24,7 +28,7 @@ require('blink.cmp').setup {
   },
 
   sources = {
-    default = { 'lsp', 'path', 'snippets' },
+    default = { 'lsp', 'path', 'snippets', 'buffer' },
   },
 
   snippets = { preset = 'luasnip' },
