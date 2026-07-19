@@ -2,15 +2,48 @@ local function gh(repo) return 'https://github.com/' .. repo end
 
 -- [[ Configure Treesitter ]]
 --  Used to highlight, edit, and navigate code
---
 --  See `:help nvim-treesitter-intro`
 
--- NOTE: You can also specify a branch or a specific commit
 vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
 
--- Ensure basic parsers are installed
-local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+-- Ensure these parsers are installed (others auto-install on first use below)
+local parsers = {
+  -- stock
+  'bash',
+  'c',
+  'diff',
+  'html',
+  'lua',
+  'luadoc',
+  'markdown',
+  'markdown_inline',
+  'query',
+  'vim',
+  'vimdoc',
+  -- devops
+  'go',
+  'gomod',
+  'gosum',
+  'proto',
+  'dockerfile',
+  'json',
+  'yaml',
+  'gotmpl',
+  'helm',
+  'terraform',
+  'hcl',
+}
 require('nvim-treesitter').install(parsers)
+
+-- Helm/gotmpl filetypes (no built-in detection in Nvim 0.12)
+vim.filetype.add {
+  extension = { gotmpl = 'gotmpl' },
+  pattern = {
+    ['.*/templates/.*%.tpl'] = 'helm',
+    ['.*/templates/.*%.ya?ml'] = 'helm',
+    ['helmfile.*%.ya?ml'] = 'helm',
+  },
+}
 
 ---@param buf integer
 ---@param language string
@@ -20,16 +53,13 @@ local function treesitter_try_attach(buf, language)
   -- Enable syntax highlighting and other treesitter features
   vim.treesitter.start(buf, language)
 
-  -- Enable treesitter based folds
-  -- For more info on folds see `:help folds`
-  -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-  -- vim.wo.foldmethod = 'expr'
+  -- Enable treesitter based folds (foldlevel in options.lua keeps them open)
+  vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+  vim.wo.foldmethod = 'expr'
 
-  -- Check if treesitter indentation is available for this language, and if so enable it
-  -- in case there is no indent query, the indentexpr will fallback to the vim's built in one
+  -- Enable treesitter based indentation when an indent query exists
+  -- (otherwise indentexpr falls back to vim's built-in one)
   local has_indent_query = vim.treesitter.query.get(language, 'indents') ~= nil
-
-  -- Enable treesitter based indentation
   if has_indent_query then vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" end
 end
 
@@ -55,5 +85,8 @@ vim.api.nvim_create_autocmd('FileType', {
     end
   end,
 })
+
+-- Expose the parser list so setup.sh can install them headlessly
+return { parsers = parsers }
 
 -- vim: ts=2 sts=2 sw=2 et
