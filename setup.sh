@@ -22,6 +22,9 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # 2. Dependencies
 step "Installing dependencies (brew bundle)"
+# Newer Homebrew refuses formulas from untrusted third-party taps
+brew tap --quiet hashicorp/tap 2>/dev/null || true
+brew trust hashicorp/tap 2>/dev/null || true
 brew bundle --file "$REPO_DIR/Brewfile"
 
 # Mason needs brew's node (>= 18) to shadow any older system install
