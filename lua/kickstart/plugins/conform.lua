@@ -5,7 +5,9 @@ vim.pack.add { gh 'stevearc/conform.nvim' }
 require('conform').setup {
   notify_on_error = false,
   format_on_save = function(bufnr)
-    -- Autoformat on save EXCEPT for these filetypes (yaml/helm only via explicit <leader>f)
+    -- Autoformat on save EXCEPT for these filetypes.
+    -- yaml formats only via explicit <leader>f; helm is never formatted
+    -- (yamlfmt would mangle the gotmpl markup).
     local disable_filetypes = { c = true, cpp = true, yaml = true, helm = true }
     if disable_filetypes[vim.bo[bufnr].filetype] then return nil end
     return { timeout_ms = 1000, lsp_format = 'fallback' }

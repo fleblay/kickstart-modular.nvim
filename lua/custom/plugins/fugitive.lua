@@ -5,7 +5,8 @@ vim.keymap.set('n', '<leader>gs', function()
   if vim.bo.filetype ~= 'fugitive' then
     vim.cmd 'G'
   else
-    vim.cmd 'q'
+    -- :close (not :q) so a lone status window never quits Neovim
+    pcall(vim.cmd, 'close')
   end
 end, { desc = 'Toggle [G]it [S]tatus' })
 

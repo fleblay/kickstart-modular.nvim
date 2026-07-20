@@ -18,16 +18,26 @@ local actions = require 'telescope.actions'
 require('telescope').setup {
   defaults = {
     mappings = {
+      -- Send selection (or all results when nothing is selected) to the loclist
       i = {
-        ['<c-d>'] = actions.delete_buffer,
         ['<M-q>'] = false,
-        ['<C-q>'] = actions.send_selected_to_loclist + actions.open_loclist,
+        ['<C-q>'] = actions.smart_send_to_loclist + actions.open_loclist,
       },
       n = {
-        ['<c-d>'] = actions.delete_buffer,
-        ['dd'] = actions.delete_buffer,
         ['<M-q>'] = false,
-        ['<C-q>'] = actions.send_selected_to_loclist + actions.open_loclist,
+        ['<C-q>'] = actions.smart_send_to_loclist + actions.open_loclist,
+      },
+    },
+  },
+  pickers = {
+    -- delete_buffer only makes sense where entries are buffers
+    buffers = {
+      mappings = {
+        i = { ['<c-d>'] = actions.delete_buffer },
+        n = {
+          ['<c-d>'] = actions.delete_buffer,
+          ['dd'] = actions.delete_buffer,
+        },
       },
     },
   },

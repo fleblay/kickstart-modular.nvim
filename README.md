@@ -57,8 +57,8 @@ non-kickstart ones:
 | `<leader>si` / `<leader>su` | Grep / find files incl. hidden + gitignored |
 | `sqn` `sqp` `sqg` `sqo` `sqc` | Quickfix: next / prev / current / open / close |
 | `sw` | Write all files |
-| `<c-d>` / `dd` (in telescope) | Delete buffer |
-| `<C-q>` (in telescope) | Send selection to loclist |
+| `<c-d>` / `dd` (in buffers picker) | Delete buffer |
+| `<C-q>` (in telescope) | Send selection (or all results) to loclist |
 
 ## Structure
 

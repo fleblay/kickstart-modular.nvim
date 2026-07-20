@@ -48,19 +48,24 @@ vim.filetype.add {
 ---@param buf integer
 ---@param language string
 local function treesitter_try_attach(buf, language)
+  -- The buffer may be gone by the time an async parser install finishes
+  if not vim.api.nvim_buf_is_valid(buf) then return end
   -- Check if a parser exists and load it
   if not vim.treesitter.language.add(language) then return end
   -- Enable syntax highlighting and other treesitter features
   vim.treesitter.start(buf, language)
 
-  -- Enable treesitter based folds (foldlevel in options.lua keeps them open)
-  vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-  vim.wo.foldmethod = 'expr'
+  -- Apply window/buffer options to the triggering buffer, not whatever is current
+  vim.api.nvim_buf_call(buf, function()
+    -- Enable treesitter based folds (foldlevel in options.lua keeps them open)
+    vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    vim.wo.foldmethod = 'expr'
 
-  -- Enable treesitter based indentation when an indent query exists
-  -- (otherwise indentexpr falls back to vim's built-in one)
-  local has_indent_query = vim.treesitter.query.get(language, 'indents') ~= nil
-  if has_indent_query then vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" end
+    -- Enable treesitter based indentation when an indent query exists
+    -- (otherwise indentexpr falls back to vim's built-in one)
+    local has_indent_query = vim.treesitter.query.get(language, 'indents') ~= nil
+    if has_indent_query then vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" end
+  end)
 end
 
 local available_parsers = require('nvim-treesitter').get_available()
