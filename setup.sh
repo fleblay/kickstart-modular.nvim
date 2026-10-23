@@ -52,7 +52,7 @@ nvim --headless "+qa" </dev/null
 step "Installing LSP servers, tools and treesitter parsers"
 nvim --headless \
   "+MasonToolsInstallSync" \
-  "+lua require('nvim-treesitter').install(require('kickstart.plugins.treesitter').parsers):wait(600000)" \
+  "+lua require('nvim-treesitter').install(vim.g.kickstart_parsers):wait(600000)" \
   "+qa" </dev/null
 
 step "Done"

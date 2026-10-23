@@ -1,9 +1,10 @@
 # nvim config
 
-Personal Neovim configuration, forked from
-[dam9000/kickstart-modular.nvim](https://github.com/dam9000/kickstart-modular.nvim)
-and trimmed down to what I use for devops work (Kubernetes, Helm, Kustomize,
-Terraform, Ansible), Go and shell scripting.
+Personal Neovim configuration, based on
+[nvim-lua/kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim)
+and tuned for devops work (Kubernetes, Helm, Kustomize, Terraform, Ansible),
+Go and shell scripting. Edits to kickstart's `init.lua` are kept small so
+upstream changes merge cleanly (`git merge upstream/master`).
 
 - **Nvim 0.12+** — plugins are managed by the built-in `vim.pack`, no plugin-manager plugin.
 - LSP servers, formatters and linters are installed by **Mason**.
@@ -63,15 +64,12 @@ non-kickstart ones:
 ## Structure
 
 ```
-init.lua                    entry point
-lua/options.lua             editor options
-lua/keymaps.lua             basic keymaps + diagnostics config
-lua/custom/keymaps.lua      personal keymaps
-lua/pack.lua                vim.pack build hooks
-lua/plugins.lua             plugin roster (one require per module)
-lua/kickstart/plugins/*.lua one file per plugin
-lua/custom/plugins/*.lua    personal plugins (auto-loaded)
+init.lua                    kickstart's single-file config, in 10 sections
+                            (options, keymaps, vim.pack hooks, UI, search, LSP,
+                            formatting, completion, treesitter, optional plugins)
+lua/kickstart/plugins/*.lua kickstart's optional plugins (neo-tree, autopairs,
+                            indent_line enabled in SECTION 10)
+lua/custom/plugins/*.lua    personal plugins and keymaps (auto-loaded)
 ```
 
-Upstream remains available as the `upstream` remote for reference and
-cherry-picking.
+Pull upstream changes with `git fetch upstream && git merge upstream/master`.
