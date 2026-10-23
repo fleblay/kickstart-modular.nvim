@@ -666,8 +666,11 @@ do
   -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
   -- and elegantly composed help section, `:help lsp-vs-treesitter`
 
-  -- Useful status updates for LSP.
-  vim.pack.add { gh 'j-hui/fidget.nvim' }
+  -- Useful status updates for LSP; schemastore provides JSON/YAML schema catalogs for yamlls.
+  vim.pack.add {
+    gh 'j-hui/fidget.nvim',
+    gh 'b0o/schemastore.nvim',
+  }
   require('fidget').setup {}
 
   --  This function gets run when an LSP attaches to a particular buffer.
@@ -744,7 +747,6 @@ do
   ---@type table<string, vim.lsp.Config>
   local servers = {
     -- clangd = {},
-    -- gopls = {},
     -- pyright = {},
     -- tsc = {},
     --
@@ -753,6 +755,55 @@ do
     --
     -- But for many setups, the LSP (`rust_analyzer`) will work just fine
     -- rust_analyzer = {},
+
+    -- Go
+    gopls = {
+      cmd_env = { GOFLAGS = '-tags=e2e_tests,integration_tests,e2e,integration' },
+      settings = {
+        gopls = {
+          buildFlags = { '-tags=e2e_tests,integration_tests,e2e,integration' },
+        },
+      },
+    },
+    golangci_lint_ls = {},
+
+    -- Shell (picks up shellcheck and shfmt automatically when on PATH)
+    bashls = {},
+
+    -- Terraform
+    terraformls = {},
+
+    -- Ansible (integrates ansible-lint when on PATH)
+    ansiblels = {},
+
+    -- Helm (suppress yamlls noise inside gotmpl-laden templates)
+    helm_ls = {
+      settings = {
+        ['helm-ls'] = {
+          yamlls = { diagnosticsLimit = 0 },
+        },
+      },
+    },
+
+    -- YAML: schemastore catalog (kustomization, GitHub workflows, docker-compose, ...)
+    --  plus the yamlls built-in kubernetes schema for raw manifests
+    yamlls = {
+      settings = {
+        yaml = {
+          schemaStore = { enable = false, url = '' }, -- disable built-in store; schemastore.nvim provides the catalog
+          schemas = vim.tbl_deep_extend('force', require('schemastore').yaml.schemas(), {
+            kubernetes = {
+              'k8s/**/*.{yml,yaml}',
+              'kubernetes/**/*.{yml,yaml}',
+              'manifests/**/*.{yml,yaml}',
+              'deploy/**/*.{yml,yaml}',
+              'base/**/*.{yml,yaml}',
+              'overlays/**/*.{yml,yaml}',
+            },
+          }),
+        },
+      },
+    },
 
     stylua = {}, -- Used to format Lua code
 
@@ -784,6 +835,9 @@ do
       settings = {
         Lua = {
           format = { enable = false }, -- Disable formatting (formatting is done by stylua)
+          completion = { callSnippet = 'Replace' },
+          -- Ignore Lua_LS's noisy `missing-fields` warnings
+          diagnostics = { disable = { 'missing-fields' } },
         },
       },
     },
@@ -814,6 +868,13 @@ do
   local ensure_installed = vim.tbl_keys(servers or {})
   vim.list_extend(ensure_installed, {
     -- You can add other tools here that you want Mason to install
+    -- Formatters and linters used by conform / bashls
+    'goimports',
+    'gofumpt',
+    'golangci-lint',
+    'yamlfmt',
+    'shellcheck',
+    'shfmt',
   })
 
   require('mason-tool-installer').setup { ensure_installed = ensure_installed }
