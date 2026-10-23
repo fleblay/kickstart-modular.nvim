@@ -896,12 +896,16 @@ do
     notify_on_error = false,
     format_on_save = function(bufnr)
       -- You can specify filetypes to autoformat on save here:
+      -- yaml formats only via explicit <leader>f; helm is never formatted
+      -- (yamlfmt would mangle the gotmpl markup).
       local enabled_filetypes = {
-        -- lua = true,
-        -- python = true,
+        go = true,
+        lua = true,
+        sh = true,
+        terraform = true,
       }
       if enabled_filetypes[vim.bo[bufnr].filetype] then
-        return { timeout_ms = 500 }
+        return { timeout_ms = 1000 }
       else
         return nil
       end
@@ -911,6 +915,11 @@ do
     },
     -- You can also specify external formatters in here.
     formatters_by_ft = {
+      go = { 'goimports', 'gofumpt' },
+      sh = { 'shfmt' },
+      terraform = { 'terraform_fmt' }, -- needs the terraform binary (brew)
+      yaml = { 'yamlfmt' }, -- reads ~/.config/yamlfmt/.yamlfmt
+      -- lua intentionally absent: stylua runs as an LSP server, reached via lsp_format fallback
       -- rust = { 'rustfmt' },
       -- Conform can also run multiple formatters sequentially
       -- python = { "isort", "black" },
