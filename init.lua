@@ -1029,7 +1029,21 @@ do
 
   -- Ensure basic parsers are installed
   local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+  -- devops parsers
+  vim.list_extend(parsers, { 'go', 'gomod', 'gosum', 'proto', 'dockerfile', 'json', 'yaml', 'gotmpl', 'helm', 'terraform', 'hcl' })
+  -- Expose the parser list so setup.sh can install them headlessly
+  vim.g.kickstart_parsers = parsers
   require('nvim-treesitter').install(parsers)
+
+  -- Helm/gotmpl filetypes (no built-in detection in Nvim 0.12)
+  vim.filetype.add {
+    extension = { gotmpl = 'gotmpl' },
+    pattern = {
+      ['.*/templates/.*%.tpl'] = 'helm',
+      ['.*/templates/.*%.ya?ml'] = 'helm',
+      ['helmfile.*%.ya?ml'] = 'helm',
+    },
+  }
 
   ---@param buf integer
   ---@param language string
@@ -1045,15 +1059,18 @@ do
 
     -- Enable treesitter based folds
     -- For more info on folds see `:help folds`
-    -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-    -- vim.wo.foldmethod = 'expr'
+    -- (run in `buf`'s window: after an async install, another window may be current)
+    vim.api.nvim_buf_call(buf, function()
+      vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+      vim.wo.foldmethod = 'expr'
+    end)
 
     -- Check if treesitter indentation is available for this language, and if so enable it
     -- in case there is no indent query, the indentexpr will fallback to the vim's built in one
     local has_indent_query = vim.treesitter.query.get(language, 'indents') ~= nil
 
     -- Enable treesitter based indentation
-    if has_indent_query then vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" end
+    if has_indent_query then vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" end
   end
 
   local available_parsers = require('nvim-treesitter').get_available()
