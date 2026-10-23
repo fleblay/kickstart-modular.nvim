@@ -541,6 +541,7 @@ do
   vim.pack.add(telescope_plugins)
 
   -- See `:help telescope` and `:help telescope.setup()`
+  local actions = require 'telescope.actions'
   require('telescope').setup {
     -- You can put your default mappings / updates / etc. in here
     --  All the info you're looking for is in `:help telescope.setup()`
@@ -551,6 +552,31 @@ do
     --   },
     -- },
     -- pickers = {}
+    defaults = {
+      mappings = {
+        -- Send selection (or all results when nothing is selected) to the loclist
+        i = {
+          ['<M-q>'] = false,
+          ['<C-q>'] = actions.smart_send_to_loclist + actions.open_loclist,
+        },
+        n = {
+          ['<M-q>'] = false,
+          ['<C-q>'] = actions.smart_send_to_loclist + actions.open_loclist,
+        },
+      },
+    },
+    pickers = {
+      -- delete_buffer only makes sense where entries are buffers
+      buffers = {
+        mappings = {
+          i = { ['<c-d>'] = actions.delete_buffer },
+          n = {
+            ['<c-d>'] = actions.delete_buffer,
+            ['dd'] = actions.delete_buffer,
+          },
+        },
+      },
+    },
     extensions = {
       ['ui-select'] = { require('telescope.themes').get_dropdown() },
     },
@@ -633,6 +659,27 @@ do
 
   -- Shortcut for searching your Neovim configuration files
   vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config', follow = true } end, { desc = '[S]earch [N]eovim files' })
+
+  -- Search including hidden and gitignored files
+  vim.keymap.set('n', '<leader>si', function()
+    builtin.live_grep {
+      additional_args = function() return { '--no-ignore', '--hidden' } end,
+      prompt_title = 'Live Grep (hidden + ignored)',
+    }
+  end, { desc = '[S]earch [I]gnored and hidden files by grep' })
+
+  vim.keymap.set(
+    'n',
+    '<leader>su',
+    function()
+      builtin.find_files {
+        no_ignore = true,
+        hidden = true,
+        prompt_title = 'Find Files (hidden + ignored)',
+      }
+    end,
+    { desc = '[S]earch [U]nlisted (ignored and hidden) files' }
+  )
 end
 
 -- ============================================================
